@@ -1808,9 +1808,10 @@ endif()
 #
 # End ATen checks
 #
-set(TEMP_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libs" FORCE)
-add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/fmt)
+
+#set(TEMP_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+#set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libs" FORCE)
+#add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/fmt)
 
 # Disable compiler feature checks for `fmt`.
 #
@@ -1819,10 +1820,11 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/fmt)
 # CMAKE_CXX_FLAGS in ways that break feature checks. Since we already know
 # `fmt` is compatible with a superset of the compilers that PyTorch is, it
 # shouldn't be too bad to just disable the checks.
-set_target_properties(fmt-header-only PROPERTIES INTERFACE_COMPILE_FEATURES "")
+#set_target_properties(fmt-header-only PROPERTIES INTERFACE_COMPILE_FEATURES "")
+find_package(fmt REQUIRED)
+list(APPEND Caffe2_DEPENDENCY_LIBS fmt::fmt)
 
-list(APPEND Caffe2_DEPENDENCY_LIBS fmt::fmt-header-only)
-set(BUILD_SHARED_LIBS ${TEMP_BUILD_SHARED_LIBS} CACHE BOOL "Build shared libs" FORCE)
+#set(BUILD_SHARED_LIBS ${TEMP_BUILD_SHARED_LIBS} CACHE BOOL "Build shared libs" FORCE)
 
 if(USE_BREAKPAD)
   add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../third_party/breakpad)
